@@ -10,6 +10,9 @@ import { PostsService } from './posts.service';
 
   ],
   controllers: [PostsController],
-  providers: [PostsService]
+  providers: [{
+    provide: 'Blog',
+    useClass: PostsService
+  }]
 })
 export class PostsModule { }

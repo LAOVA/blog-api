@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, Inject } from '@nestjs/common';
 import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
 import { PostsService } from './posts.service';
 
@@ -12,7 +12,7 @@ class CreatePostDTO {
 @Controller('posts')
 @ApiTags('帖子')
 export class PostsController {
-  constructor(private readonly postsService: PostsService) { }
+  constructor(@Inject('Blog') private readonly postsService: PostsService) { }
 
   @Get()
   @ApiOperation({ summary: '显示帖子列表' })
