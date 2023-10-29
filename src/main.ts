@@ -14,7 +14,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
-  console.log('run in http://localhost:3000');
+  console.log('run in http://localhost:3000/docs');
 
 
   await app.listen(3000);

@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { ApiOperation, ApiProperty, ApiTags } from '@nestjs/swagger';
-import { query } from 'express';
+import { PostsService } from './posts.service';
 
 class CreatePostDTO {
   @ApiProperty({ description: '标题' })
@@ -12,33 +12,27 @@ class CreatePostDTO {
 @Controller('posts')
 @ApiTags('帖子')
 export class PostsController {
+  constructor(private readonly postsService: PostsService) { }
+
   @Get()
   @ApiOperation({ summary: '显示帖子列表' })
   index() {
-    return [
-      { id: 1, title: '帖子1' },
-      { id: 1, title: '帖子1' },
-      { id: 1, title: '帖子1' },
-      { id: 1, title: '帖子1' },
-    ]
+    return this.postsService.index()
   }
 
-  @Post()
+  @Post('/add')
   @ApiOperation({ summary: '创建帖子' })
   create(@Body() body: CreatePostDTO) {
     return {
       ok: true,
-      data: body
+      data: this.postsService.addArticle(body)
     }
   }
 
-  @Get(':id')
+  @Get('article/:title')
   @ApiOperation({ summary: '帖子详情' })
-  detail(@Param('id') id: string) {
-    return {
-      id: 1,
-      title: 'aaaaa'
-    }
+  detail(@Param('title') title: string) {
+    return this.postsService.getArticle(title)
   }
 
   @Put(':id')
@@ -49,11 +43,10 @@ export class PostsController {
     }
   }
 
-  @Delete(':id')
+  @Delete('/delete/:id')
   @ApiOperation({ summary: '删除帖子' })
   remove(@Param('id') id: string) {
-    return {
-      ok: true
-    }
+    return this.postsService.deleteArticle(id)
   }
+
 }
